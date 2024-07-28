@@ -1,0 +1,24 @@
+FROM golang:1.19.9-alpine3.18
+USER root
+RUN sed -i 's@https://dl-cdn.alpinelinux.org/alpine@http://192.168.0.227:3142/alpine@g' /etc/apk/repositories
+ && apk update
+RUN apk add git nfs-utils
+
+#挂载依赖路径nfs
+RUN apk add --no-cache openrc
+RUN openrc
+RUN touch /run/openrc/softlevel
+RUN rc-service nfsmount start
+RUN mount -t nfs 192.168.0.220:/data/nfs/fast/go /go/pkg
+#取消掉https的ssl证书验证
+ARG git config --global http.sslVerify "false"
+#--depth 1指定最后一次git代码
+WORKDIR /
+#预编译环境
+RUN git clone --depth 1 http://192.168.0.237/fastos/fastserver.git
+WORKDIR /fastserver
+
+RUN go env -w GO111MODULE=on \
+    && go env -w CGO_ENABLED=0 \
+    && go env -w GOPROXY=https://goproxy.cn,direct
+RUN go build -o dockercurl .

@@ -1,0 +1,7 @@
+/.idea
+/dockercurl*
+/*.json
+/vendor
+/*.yaml
+.DS_Store
+/data/*.db

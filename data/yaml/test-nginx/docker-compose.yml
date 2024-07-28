@@ -1,0 +1,16 @@
+services:
+    nginx-123:
+        container_name: nginx-123
+        environment: {}
+        image: nginx
+        ports: []
+        restart: always
+        volumes: []
+    redis-002:
+        container_name: redis-002
+        environment: {}
+        image: redis:alpine
+        ports: []
+        restart: always
+        volumes: []
+version: "3.1"

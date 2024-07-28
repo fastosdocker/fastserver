@@ -1,0 +1,9 @@
+version: '2'
+services:
+  fast:
+    container_name: fast
+    image: fast
+    environment:
+      FAST_STORE: http://192.168.0.225:8300   ##这里是应用商店地址，rds不在使用
+    ports:
+      - "8081:8081"

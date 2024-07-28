@@ -1,0 +1,6 @@
+FROM golang
+WORKDIR /go/src/
+COPY . .
+RUN chmod +x build.sh
+EXPOSE 8081
+CMD ["sh" ,"/go/src/build.sh"]

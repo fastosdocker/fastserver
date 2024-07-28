@@ -1,0 +1,16 @@
+port: "8081"
+key: FAST230724-4I58O30KXT1G
+loginuser:
+- userid: 1
+  username: admin
+  password: $2a$14$C3wjLFD1TFAmTlmUyxltR.1pD2Cb5joHIFaAU/GaJl5n43uaHIwgy
+  noncestr: CPK62DQ20OR1CMTUN9C68BS79XIFGR37
+daemonpath: /etc/docker/daemon.json
+dockerhubuser: []
+tls:
+  key: config/server-sign/cert.key
+  pem: config/server-sign/cert.crt
+https:
+  flag: false
+  port: "8082"
+storeurl: ""

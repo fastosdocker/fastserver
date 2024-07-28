@@ -1,0 +1,31 @@
+# syntax = docker/dockerfile:experimental
+FROM golang:1.19.9-alpine3.18
+USER root
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk update
+RUN apk add git nfs-utils
+
+#挂载依赖路径nfs
+RUN apk add --no-cache openrc
+RUN openrc
+RUN touch /run/openrc/softlevel
+RUN rc-service nfsmount start || echo 0
+RUN mkdir /go/pkg
+#  || echo
+RUN mount -t nfs 192.168.0.220:/data/nfs/fast/go /go/pkg
+#RUN service rpcbind start
+#RUN mkdir /go/pkg
+#RUN mount -t nfs 192.168.0.220:/data/nfs/fast/go /go/pkg
+#RUN --mount=type=tmpfs,size=100m,uid=1000,gid=1000,mode=0755
+#取消掉https的ssl证书验证
+ARG git config --global http.sslVerify "false"
+#--depth 1指定最后一次git代码
+WORKDIR /
+#预编译环境
+RUN git clone --depth 1 http://192.168.0.237/fastos/fastserver.git
+WORKDIR /fastserver
+
+RUN go env -w GO111MODULE=on \
+    && go env -w CGO_ENABLED=0 \
+    && go env -w GOPROXY=https://goproxy.cn,direct
+#RUN --mount=type=cache,target=/go/pkg,id=fastos-go,sharing=shared\
+RUN go build -o dockercurl .

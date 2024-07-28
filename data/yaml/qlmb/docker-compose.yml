@@ -1,0 +1,8 @@
+services:
+    web:
+        image: whyour/qinglong:latest
+        ports:
+            - 5700:5700
+        volumes:
+            - /home/qinglong123:/ql/data
+version: "3.1"
